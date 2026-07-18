@@ -1,0 +1,1 @@
+    document.querySelector('footer p').textContent = `© ${new Date().getFullYear()} Ragibnoor`;
