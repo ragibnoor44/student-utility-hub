@@ -30,3 +30,62 @@ body {
 .card:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
 }
+
+body.dark-mode {
+    background-color: #121212;
+    color: #f1f1f1;
+}
+
+body.dark-mode .bg-light {
+    background-color: #1a1a1a !important;
+    color: #f1f1f1;
+}
+
+body.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.dark-mode .navbar {
+    background-color: #000 !important;
+}
+
+body.dark-mode .lead,
+body.dark-mode p {
+    color: #d1d1d1;
+}
+
+.theme-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #f1f1f1;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: rotate(20deg);
+}
+
+body.dark-mode .theme-btn {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+body.dark-mode .btn-outline-dark {
+    color: #f1f1f1;
+    border-color: #f1f1f1;
+}
+
+body.dark-mode .btn-outline-dark:hover {
+    background-color: #f1f1f1;
+    color: #121212;
+}

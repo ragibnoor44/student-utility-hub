@@ -2,7 +2,7 @@
     if (footerP) {
         footerP.textContent = `© ${new Date().getFullYear()} Ragibnoor`;
     }
-    
+
     const loginForm = document.getElementById('loginForm');
 
     if(loginForm) {
@@ -33,6 +33,28 @@
             if (isValid) {
                 alert('Login successful.');
                 loginForm.reset();
+            }
+        });
+    }
+
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    if (themeToggle) {
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+        
+            if(body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌙';
             }
         });
     }
