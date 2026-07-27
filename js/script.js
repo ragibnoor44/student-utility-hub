@@ -58,3 +58,73 @@
             }
         });
     }
+
+    const noteForm = document.getElementById('noteForm');
+    const notesContainer = document.getElementById('notesContainer');
+
+    if(noteForm && notesContainer) {
+
+        function getNotes() {
+            const notes = localStorage.getItem('notes');
+            return notes ? JSON.parse(notes) : [];
+        }
+
+        function saveNotes(notes) {
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        function renderNotes() {
+            const notes = getNotes();
+            notesContainer.innerHTML = '';
+
+            notes.forEach(function(note) {
+                const col = document.createElement('div');
+                col.className = 'col-md-4';
+
+                col.innerHTML = `
+                <div class="card p-3">
+                <h5>${note.title}</h5>
+                <p>${note.text}</p>
+                <button class="btn btn-outline-danger btn-sm delete-btn" data-id="${note.id}">Delete</button>
+                </div>
+                `;
+
+                notesContainer.appendChild(col);
+            });
+        }
+
+        noteForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('noteTitle').value.trim();
+            const text = document.getElementById('noteText').value.trim();
+
+            if (title === '' || text === '') return;
+
+            const notes = getNotes();
+            const newNote = {
+                id: Date.now(),
+                title: title,
+                text: text
+            };
+
+            notes.push(newNote);
+            saveNotes(notes);
+            renderNotes();
+            noteForm.reset();
+        });
+
+        notesContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('delete-btn')) {
+                const noteId = Number(e.target.getAttribute('data-id'));
+                let notes = getNotes();
+                notes = notes.filter(function (note) {
+                    return note.id !== noteId;
+                });
+                saveNotes(notes);
+                renderNotes();
+            }
+        });
+
+        renderNotes();
+    }
