@@ -128,3 +128,85 @@
 
         renderNotes();
     }
+
+    // Tasks JavaScript
+    const taskForm = document.getElementById('taskForm');
+    const tasksList = document.getElementById('tasksList');
+
+    if (taskForm && tasksList) {
+        function getTasks() {
+            const tasks = localStorage.getItem('tasks');
+            return tasks ? JSON.parse(tasks) : [];
+        }
+
+        function saveTasks(tasks) {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function renderTasks() {
+            const tasks = getTasks();
+            tasksList.innerHTML = '';
+
+            tasks.forEach(function (task) {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+                li.innerHTML = `
+                <div class="form-check">
+                <input class="form-check-input complete-checkbox" type="checkbox" data-id="${task.id}" ${task.completed ? 'checked' : ''}>
+                <label class="form-check-label ${task.completed ? 'text-decoration-line-through text-muted' : ''}">
+                ${task.text}
+                </label>
+                </div>
+                <button class="btn btn-outline-danger btn-sm delete-task-btn" data-id="${task.id}">Delete</button>
+                `;
+
+                tasksList.appendChild(li);
+            });
+        }
+
+        taskForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const text = document.getElementById('taskInput').value.trim();
+            if (text === '') return;
+                
+            const tasks = getTasks();
+            tasks.push( {
+                id: Date.now(),
+                text: text,
+                completed: false
+            });
+
+            saveTasks(tasks);
+            renderTasks();
+            taskForm.reset();
+        });
+
+        tasksList.addEventListener('click', function (e) {
+            if (e.target.classList.contains('delete-task-btn')) {
+                const taskId = Number(e.target.getAttribute('data-id'));
+                let tasks = getTasks();
+                tasks = tasks.filter(function (task) {
+                    return task.id !== taskId;
+                });
+                saveTasks(tasks);
+                renderTasks();
+            }
+        });
+
+        tasksList.addEventListener('change', function (e) {
+            if (e.target.classList.contains('complete-checkbox')) {
+                const taskId = Number(e.target.getAttribute('data-id'));
+                const tasks = getTasks();
+                const task = tasks.find(function (t) {
+                    return t.id === taskId;
+                });
+                task.completed = e.target.checked;
+                saveTasks(tasks);
+                renderTasks();
+            }
+        });
+
+        renderTasks();
+    }
